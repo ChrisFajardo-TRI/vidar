@@ -40,7 +40,8 @@ class FocalDepthResNet(BaseNet, ABC):
             inv_depths = [self.scale_inv_depth(inv_depths[0])[0]]
 
         depths = inv2depth(inv_depths)
-        depths = [d * intrinsics[:, 0, 0].view(rgb.shape[0], 1, 1, 1) for d in depths]
+        if intrinsics is not None:
+            depths = [d * intrinsics[:, 0, 0].view(rgb.shape[0], 1, 1, 1) for d in depths]
         inv_depths = depth2inv(depths)
 
         return {
